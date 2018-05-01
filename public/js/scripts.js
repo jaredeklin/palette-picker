@@ -7,7 +7,6 @@ $('.new-palette-btn').on('click', colorsArray);
 $('.color-section').on('click', '.lock-btn', toggleLock);
 $('.save-project-btn').on('click', saveProject);
 // $('.save-project-btn').on('click', getProjects);
-
 $('.save-palette-btn').on('click', savePalette);
 $('#drop-down-menu').on('click', changeProject)
   
@@ -82,6 +81,7 @@ async function saveProject(event) {
   projects.length = 0;
   projects = [...projectData]
   populateDropdown();
+  $('.project-name-input').val('');
 }
 
 async function getProjects(event) {
@@ -102,6 +102,7 @@ async function savePalette(event) {
     colors: currentColors
   }
 
+
   const response = await fetch('/api/v1/palettes', {
     method: 'POST',
     body: JSON.stringify(palette),
@@ -109,8 +110,7 @@ async function savePalette(event) {
   });
 
   const data = await response.json();
-  console.log(data)
-  // return data;
+  $('.palette-name-input').val('');
 }
 
 
