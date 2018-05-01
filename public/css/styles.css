@@ -1,13 +1,52 @@
+* {
+  outline: none;
+  box-sizing: border-box;
+}
+
 h1 {
   text-align: center;
 }
 
 .colors {
+  position: relative;
+  box-sizing: border-box;
   display: inline-flex;
   width: 200px;
-  height: 250px;
+  height: 350px;
   border: 1px solid black;
-  /*background-color: magenta;*/
+}
+
+.colors div {
+  width: 100px;
+  height: 100px;
+  margin: 240px auto 0 auto;
+}
+
+.lock-btn {
+  display: block;
+  margin: auto;
+  height: 30px;
+  width: 30px;
+  background-image: url('/images/open-lock.svg');
+  background-size: 30px;
+  background-color: inherit;
+  border: none;
+}
+
+.lock {
+  background-image: url('/images/lock-icon.svg');
+}
+
+
+
+.lock-btn:hover {
+  /*border: 1px solid black;*/
+  box-shadow: 0 0 4px 4px;
+}
+
+.colors p {
+  width: 100%;
+  text-align: center;
 }
 
 .new-palette-btn {

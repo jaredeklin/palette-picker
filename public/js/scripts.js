@@ -1,6 +1,13 @@
-let currentColors = [];
+const currentColors = [];
+const lockedColors = [];
 
-function randomColors() {
+$('.new-palette-btn').on('click', colorsArray);
+$('.color-section').on('click', '.lock-btn', toggleLock)
+  
+colorsArray();
+appendColors();
+
+function randomColor() {
   let hexColor = '';
   while(hexColor.length < 6) {
     hexColor += (Math.random()).toString(16).substr(-6).substr(-1)
@@ -8,19 +15,45 @@ function randomColors() {
   return `#${hexColor}`
 }
 
+function colorsArray() {
+  for(let index = 0; index < 5; index++) {
+    let color = randomColor();
+    if(lockedColors.includes(currentColors[index])) {
+      console.log('match')
+    } else {
+      currentColors.splice(index, 1, color);
+    }
+  }
+  appendColors();
+}
+
 function appendColors() {
   $('.color-section').empty();
 
-  for(let i = 0; i < 5; i++) {
-    let color = randomColors();
-    currentColors.push(color)
+  currentColors.forEach(color => {
     $('.color-section').append(`
-      <article class="colors" style="background-color:${color}">color${i}</article>
+      <article class="colors" style="background-color:${color}">
+        <div>
+          <button class="lock-btn"></button>
+          <p>${color}</p>
+        </div>
+      </article>
     `);
+  });
+}
+
+function toggleLock() {
+  $(this).toggleClass('lock');
+  let color = $(this).next().text();
+
+  if (lockedColors.includes(color)) {
+    lockedColors.splice(lockedColors.indexOf(color), 1);
+  } else {
+    lockedColors.push(color);
   }
 }
 
 
-$('.new-palette-btn').on('click', appendColors);
 
-appendColors();
+
+
