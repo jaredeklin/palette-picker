@@ -2,6 +2,7 @@
 const currentColors = [];
 const lockedColors = [];
 let projects = [];
+let palettes = [];
 let currentProject;
 
 $('.new-palette-btn').on('click', colorsArray);
@@ -84,6 +85,7 @@ async function saveProject(event) {
   projects = [...projectData];
   populateDropdown();
   displayProjects();
+  // displayPalette();
   $('.project-name-input').val('');
 }
 
@@ -114,8 +116,12 @@ async function savePalette(event) {
       headers: { 'Content-Type': 'application/json' }
     });
 
-    const data = await response.json();
+    const paletteData = await response.json();
+
+    palettes.length = 0;
+    palettes = [...paletteData];
     $('.palette-name-input').val('');
+    displayProjects();
   } else {
     alert('Please select a project')
   }
@@ -141,17 +147,26 @@ function displayProjects() {
   $('.display-projects').empty();
 
   projects.forEach(project => {
-    console.log(project)
     $('.display-projects').append(`
-      <ul>${project.projectName}
-        <li></li>
+      <ul class="project-list">${project.projectName}
+      ${displayPalette(project.projectId)}
       </ul>
-    `)
-  })
+    `);
+    // displayPalette(project.projectId)
+  });
 }
 
-function displayPalette() {
-  
+function displayPalette(id) {
+  // console.log(id)
+  const match = palettes.filter(project => project.projectId === id);
+  // console.log(match)
+  // console.log('palettes', palettes)
+  return match.map(palette => {
+    // console.log(palette)
+    // $('.display-projects .project-list').append(`<li class="project-colors">colors</li>`)
+    return `<li class="project-colors">colors</li>`
+  })
+  // return '<li class="project-colors">colors</li>'
 }
 
 
