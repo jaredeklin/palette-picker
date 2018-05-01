@@ -8,12 +8,11 @@ h1 {
 }
 
 .colors {
-  position: relative;
   box-sizing: border-box;
-  display: inline-flex;
-  width: 200px;
-  height: 350px;
-  border: 1px solid black;
+  display: inline-block;
+  width: 20%;
+  height: 500px;
+  margin: -2px;
 }
 
 .colors div {
@@ -40,7 +39,6 @@ h1 {
 
 
 .lock-btn:hover {
-  /*border: 1px solid black;*/
   box-shadow: 0 0 4px 4px;
 }
 
@@ -51,7 +49,7 @@ h1 {
 
 .new-palette-btn {
   display: block;
-  margin: auto;
+  margin: 20px auto;
 }
 
 .palette-form {

@@ -5,13 +5,13 @@ $('.new-palette-btn').on('click', colorsArray);
 $('.color-section').on('click', '.lock-btn', toggleLock);
   
 colorsArray();
-appendColors();
 
 function randomColor() {
   let hexColor = '';
   while(hexColor.length < 6) {
-    hexColor += (Math.random()).toString(16).substr(-6).substr(-1)
+    hexColor += (Math.random()).toString(16).substr(-6).substr(-1).toUpperCase()
   }
+
   return `#${hexColor}`
 }
 
