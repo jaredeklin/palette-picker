@@ -159,7 +159,6 @@ function displayProjects() {
 
 function displayPalette(id) {
   const match = palettes.filter(project => project.projectId === id);
-  // console.log(match)
   const projectPalettes = match.map(palette => `<div class="project-colors" data-id=${palette.id}>${ palette.name } - ${ displayProjectColors(palette.colors) }<button></button></div>`);
   
   return projectPalettes.join('');
@@ -171,10 +170,23 @@ function displayProjectColors(colors) {
   return displayPalette.join('');
 }
 
-function deletePalette() {
-  console.log($(this).parent().data('id'))
-  // $(this).parent().remove();
+async function deletePalette() {
+  // console.log($(this).parent().data('id'))
+  const id = {id: $(this).parent().data('id')};
 
+  const response = await fetch('/api/v1/palettes', {
+    method: 'DELETE',
+    body: JSON.stringify(id),
+    headers: { 'Content-Type': 'application/json' }
+  });
+
+  const deleteData = await response.json();
+  palettes.length = 0;
+  palettes = [...deleteData];
+
+  $(this).parent().remove();
+
+  console.log(palettes)
 }
 
 

@@ -32,6 +32,17 @@ app.post('/api/v1/projects', (request, response) => {
   response.status(200).json(app.locals.projects);
 });
 
+app.delete('/api/v1/palettes', (request, response) => {
+  // console.log(request.body)
+  const id = request.body.id;
+  app.locals.palettes.forEach((palette, index) => {
+    if(palette.id === id) {
+      app.locals.palettes.splice(index, 1)
+    }
+  })
+  response.status(200).json(app.locals.palettes);
+})
+
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} running on localhost:${app.get('port')}.`);
 });
