@@ -106,7 +106,8 @@ async function savePalette(event) {
     const palette = {
       name: $('.palette-name-input').val(),
       colors: currentColors,
-      projectId: currentProject.projectId
+      projectId: currentProject.projectId,
+      id: Date.now()
     }
 
     console.log(palette)
@@ -158,7 +159,8 @@ function displayProjects() {
 
 function displayPalette(id) {
   const match = palettes.filter(project => project.projectId === id);
-  const projectPalettes = match.map(palette => `<div class="project-colors">${ palette.name } - ${ displayProjectColors(palette.colors) }<button></button></div>`);
+  // console.log(match)
+  const projectPalettes = match.map(palette => `<div class="project-colors" data-id=${palette.id}>${ palette.name } - ${ displayProjectColors(palette.colors) }<button></button></div>`);
   
   return projectPalettes.join('');
 }
@@ -170,8 +172,9 @@ function displayProjectColors(colors) {
 }
 
 function deletePalette() {
-  console.log($(this).closest('article'))
-  $(this).parent().remove();
+  console.log($(this).parent().data('id'))
+  // $(this).parent().remove();
+
 }
 
 
