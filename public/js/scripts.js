@@ -10,7 +10,8 @@ $('.color-section').on('click', '.lock-btn', toggleLock);
 $('.save-project-btn').on('click', saveProject);
 // $('.save-project-btn').on('click', getProjects);
 $('.save-palette-btn').on('click', savePalette);
-$('#drop-down-menu').on('change', changeProject)
+$('#drop-down-menu').on('change', changeProject);
+$('.display-projects').on('click', 'button', deletePalette)
   
 colorsArray();
 
@@ -166,6 +167,11 @@ function displayProjectColors(colors) {
   const displayPalette = colors.map(color => `<div class='palette-colors' style="background-color:${ color }"></div>`);
   
   return displayPalette.join('');
+}
+
+function deletePalette() {
+  console.log($(this).closest('article'))
+  $(this).parent().remove();
 }
 
 
