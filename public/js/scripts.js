@@ -20,7 +20,7 @@ function randomColor() {
     hexColor += (Math.random()).toString(16).substr(-6).substr(-1).toUpperCase()
   }
 
-  return `#${hexColor}`
+  return `#${ hexColor }`
 }
 
 function colorsArray() {
@@ -45,10 +45,10 @@ function appendColors() {
     }
 
     $('.color-section').append(`
-      <article class="colors" style="background-color:${color}">
+      <article class="colors" style="background-color:${ color }">
         <div>
-          <button class="lock-btn ${lockedClass}"></button>
-          <p>${color}</p>
+          <button class="lock-btn ${ lockedClass }"></button>
+          <p>${ color }</p>
         </div>
       </article>
     `);
@@ -138,7 +138,7 @@ function populateDropdown() {
 
   projects.forEach(project => {
     $('#drop-down-menu').append(`
-      <option>${project.projectName}</option>
+      <option>${ project.projectName }</option>
     `);
   });
 }
@@ -148,27 +148,25 @@ function displayProjects() {
 
   projects.forEach(project => {
     $('.display-projects').append(`
-      <ul class="project-list">${project.projectName}
-      ${displayPalette(project.projectId)}
-      </ul>
+      <article class="project-list">Project: ${ project.projectName }
+      ${ displayPalette(project.projectId) }
+      </article>
     `);
-    // displayPalette(project.projectId)
   });
 }
 
 function displayPalette(id) {
-  // console.log(id)
   const match = palettes.filter(project => project.projectId === id);
-  // console.log(match)
-  // console.log('palettes', palettes)
-  return match.map(palette => {
-    // console.log(palette)
-    // $('.display-projects .project-list').append(`<li class="project-colors">colors</li>`)
-    return `<li class="project-colors">colors</li>`
-  })
-  // return '<li class="project-colors">colors</li>'
+  const projectPalettes = match.map(palette => `<div class="project-colors">${ palette.name } - ${ displayProjectColors(palette.colors) }</div>`);
+  
+  return projectPalettes.join('');
 }
 
+function displayProjectColors(colors) {
+  const displayPalette = colors.map(color => `<div class='palette-colors' style="background-color:${ color }"></div>`);
+  
+  return displayPalette.join('');
+}
 
 
 
