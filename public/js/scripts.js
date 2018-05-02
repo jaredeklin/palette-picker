@@ -16,6 +16,7 @@ colorsArray();
 
 function randomColor() {
   let hexColor = '';
+  
   while(hexColor.length < 6) {
     hexColor += (Math.random()).toString(16).substr(-6).substr(-1).toUpperCase()
   }
@@ -69,8 +70,7 @@ function toggleLock() {
 async function saveProject(event) {
   event.preventDefault();
   const newProject = {
-    projectName: $('.project-name-input').val(),
-    projectId: Date.now()
+    name: $('.project-name-input').val()
   }
 
   const response = await fetch('/api/v1/projects', {
@@ -103,9 +103,12 @@ async function savePalette(event) {
   if(currentProject) {
     const palette = {
       name: $('.palette-name-input').val(),
-      colors: currentColors,
-      projectId: currentProject.projectId,
-      id: Date.now()
+      color1: currentColors[0],
+      color2: currentColors[1],
+      color3: currentColors[2],
+      color4: currentColors[3],
+      color5: currentColors[4],
+      project_id: currentProject.project_id
     }
 
     const response = await fetch('/api/v1/palettes', {
@@ -121,13 +124,13 @@ async function savePalette(event) {
     $('.palette-name-input').val('');
     displayProjects();
   } else {
-    alert('Please select a project')
+    alert('Please select a project');
   }
 }
 
 
 function changeProject() {
-  currentProject = projects.find(project => project.projectName === $(this).val())
+  currentProject = projects.find(project => project.name === $(this).val())
   console.log(currentProject)
 }
 
@@ -136,7 +139,7 @@ function populateDropdown() {
 
   projects.forEach(project => {
     $('#drop-down-menu').append(`
-      <option>${ project.projectName }</option>
+      <option>${ project.name }</option>
     `);
   });
 }
@@ -146,16 +149,16 @@ function displayProjects() {
 
   projects.forEach(project => {
     $('.display-projects').append(`
-      <article class="project-list">Project: ${ project.projectName }
-      ${ displayPalette(project.projectId) }
+      <article class="project-list">Project: ${ project.name }
+      ${ displayPalette(project.project_id) }
       </article>
     `);
   });
 }
 
 function displayPalette(id) {
-  const match = palettes.filter(project => project.projectId === id);
-  const projectPalettes = match.map(palette => `<div class="project-colors" data-id=${palette.id}>${ palette.name } - ${ displayProjectColors(palette.colors) }<button></button></div>`);
+  const match = palettes.filter(project => project.project_id === id);
+  const projectPalettes = match.map(palette => `<div class="project-colors" data-id=${ palette.id }>${ palette.name } - ${ displayProjectColors(palette.colors) }<button></button></div>`);
   
   return projectPalettes.join('');
 }
@@ -181,30 +184,14 @@ async function deletePalette() {
   palettes = [...deleteData];
 
   $(this).parent().remove();
-
-  console.log(palettes)
 }
 
 function displayColors(event) {
-  // console.log(palettes)
-  // console.log(event.currentTarget.dataset.id)
   const id = parseInt(event.currentTarget.dataset.id);
-  const match = palettes.find(palette => {
-    console.log(palette.id, id)
-    return palette.id === id
-  });
-  console.log(match)
+  const match = palettes.find(palette => palette.id === id);
+  
   currentColors.length = 0;
-  currentColors = [...match.colors]
-  //currentColors array
+  currentColors = [...match.colors];
   appendColors()
 }
-
-
-
-
-
-
-
-
 
