@@ -1,0 +1,81 @@
+* {
+  outline: none;
+  box-sizing: border-box;
+}
+
+h1 {
+  text-align: center;
+}
+
+.colors {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 20%;
+  height: 500px;
+  margin: -2px;
+}
+
+.colors div {
+  width: 100px;
+  height: 100px;
+  margin: 240px auto 0 auto;
+}
+
+.lock-btn {
+  display: block;
+  margin: auto;
+  height: 30px;
+  width: 30px;
+  background-image: url('/images/open-lock.svg');
+  background-size: 30px;
+  background-color: inherit;
+  border: none;
+}
+
+.lock {
+  background-image: url('/images/lock-icon.svg');
+}
+
+
+
+.lock-btn:hover {
+  box-shadow: 0 0 4px 4px;
+}
+
+.colors p {
+  width: 100%;
+  text-align: center;
+}
+
+.new-palette-btn {
+  display: block;
+  margin: 20px auto;
+}
+
+.palette-form {
+  width: fit-content;
+  margin: auto;
+}
+
+.project-form {
+  margin: auto;
+}
+
+.project-colors button {
+  background-image: url('/images/delete-button.svg');
+  background-size: 20px;
+  height: 20px;
+  width: 20px;
+  margin-left: 10px;
+  border: none;
+}
+
+.project-colors button:hover {
+  background-image: url('/images/delete-button-red.svg');
+}
+
+.palette-colors {
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+}
