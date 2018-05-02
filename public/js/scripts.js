@@ -1,5 +1,4 @@
-// const locals = require('../../server.js')
-const currentColors = [];
+let currentColors = [];
 const lockedColors = [];
 let projects = [];
 let palettes = [];
@@ -8,10 +7,10 @@ let currentProject;
 $('.new-palette-btn').on('click', colorsArray);
 $('.color-section').on('click', '.lock-btn', toggleLock);
 $('.save-project-btn').on('click', saveProject);
-// $('.save-project-btn').on('click', getProjects);
 $('.save-palette-btn').on('click', savePalette);
 $('#drop-down-menu').on('change', changeProject);
-$('.display-projects').on('click', 'button', deletePalette)
+$('.display-projects').on('click', 'button', deletePalette);
+$('.display-projects').on('click', '.project-colors', displayColors);
   
 colorsArray();
 
@@ -86,7 +85,6 @@ async function saveProject(event) {
   projects = [...projectData];
   populateDropdown();
   displayProjects();
-  // displayPalette();
   $('.project-name-input').val('');
 }
 
@@ -109,8 +107,6 @@ async function savePalette(event) {
       projectId: currentProject.projectId,
       id: Date.now()
     }
-
-    console.log(palette)
 
     const response = await fetch('/api/v1/palettes', {
       method: 'POST',
@@ -171,8 +167,7 @@ function displayProjectColors(colors) {
 }
 
 async function deletePalette() {
-  // console.log($(this).parent().data('id'))
-  const id = {id: $(this).parent().data('id')};
+  const id = { id: $(this).parent().data('id') };
 
   const response = await fetch('/api/v1/palettes', {
     method: 'DELETE',
@@ -181,6 +176,7 @@ async function deletePalette() {
   });
 
   const deleteData = await response.json();
+
   palettes.length = 0;
   palettes = [...deleteData];
 
@@ -189,8 +185,20 @@ async function deletePalette() {
   console.log(palettes)
 }
 
-
-
+function displayColors(event) {
+  // console.log(palettes)
+  // console.log(event.currentTarget.dataset.id)
+  const id = parseInt(event.currentTarget.dataset.id);
+  const match = palettes.find(palette => {
+    console.log(palette.id, id)
+    return palette.id === id
+  });
+  console.log(match)
+  currentColors.length = 0;
+  currentColors = [...match.colors]
+  //currentColors array
+  appendColors()
+}
 
 
 
