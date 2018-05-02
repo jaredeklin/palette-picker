@@ -61,6 +61,19 @@ h1 {
   margin: auto;
 }
 
+.project-colors button {
+  background-image: url('/images/delete-button.svg');
+  background-size: 20px;
+  height: 20px;
+  width: 20px;
+  margin-left: 10px;
+  border: none;
+}
+
+.project-colors button:hover {
+  background-image: url('/images/delete-button-red.svg');
+}
+
 .palette-colors {
   height: 20px;
   width: 20px;

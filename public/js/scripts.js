@@ -157,7 +157,7 @@ function displayProjects() {
 
 function displayPalette(id) {
   const match = palettes.filter(project => project.projectId === id);
-  const projectPalettes = match.map(palette => `<div class="project-colors">${ palette.name } - ${ displayProjectColors(palette.colors) }</div>`);
+  const projectPalettes = match.map(palette => `<div class="project-colors">${ palette.name } - ${ displayProjectColors(palette.colors) }<button></button></div>`);
   
   return projectPalettes.join('');
 }
