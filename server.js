@@ -16,24 +16,33 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 app.get('/api/v1/palettes', (request, response) => {
-  
-  response.status(200).json(app.locals.palettes);
+  database('palettes').select()
+    .then(palettes => response.status(200).json(palettes))
+    .catch(error => response.status(404).json({error}))
 });
 
 app.get('/api/v1/projects', (request, response) => {
-  response.status(200).json(app.locals.projects);
+  database('projects').select()
+    .then(projects => response.status(200).json(projects))
+    .catch(error => response.status(404).json({error}))
 });
 
 app.post('/api/v1/palettes', (request, response) => {
-
-  app.locals.palettes.push(request.body);
-  response.status(201).json(app.locals.palettes);
+  const palette = request.body;
+  console.log(palette)
+  // const data = ['id', 'name', 'color1', 'color2', 'color3', 'color4', 'color5', 'project_id']
+  database('palettes').insert(palette, ['id', 'name', 'color1', 'color2', 'color3', 'color4', 'color5', 'project_id'])
+    .then(palette => response.status(201).json(palette[0]))
+    .catch(error => response.status(500).json({error}))
+  // app.locals.palettes.push(request.body);,
+  // response.status(201).json(app.locals.palettes);
 });
 
 app.post('/api/v1/projects', (request, response) => {
-
-  app.locals.projects.push(request.body);
-  response.status(200).json(app.locals.projects);
+  const project = request.body
+  database('projects').insert(project, ['id', 'name'])
+    .then(project => response.status(201).json(project[0]))
+    .catch(error => response.status(500).json({error}))
 });
 
 app.delete('/api/v1/palettes', (request, response) => {

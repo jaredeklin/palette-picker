@@ -13,6 +13,7 @@ $('.display-projects').on('click', 'button', deletePalette);
 $('.display-projects').on('click', '.project-colors', displayColors);
   
 colorsArray();
+getProjects();
 
 function randomColor() {
   let hexColor = '';
@@ -81,21 +82,33 @@ async function saveProject(event) {
 
   const projectData = await response.json();
 
-  projects.length = 0;
-  projects = [...projectData];
+  projects = [...projects, projectData];
   populateDropdown();
   displayProjects();
   $('.project-name-input').val('');
 }
 
-// async function getProjects(event) {
-//   event.preventDefault()
-//   const response = await fetch('/api/v1/projects');
-//   const projectData = await response.json();
+async function getProjects() {
+  const response = await fetch('/api/v1/projects');
+  const projectData = await response.json();
+  projects.length = 0;
+  projects = [...projectData];
+  console.log(projects)
+  await getPalettes();
+  populateDropdown();
+  displayProjects();
+}
+
+async function getPalettes() {
+  const response = await fetch('/api/v1/palettes');
+  const paletteData = await response.json();
+  palettes = [...paletteData];
+  console.log(palettes);
+}
+
+function cleanPalette() {
   
-//   projects.push(projectData);
-//   populateDropdown();
-// }
+}
 
 
 async function savePalette(event) {
@@ -108,9 +121,9 @@ async function savePalette(event) {
       color3: currentColors[2],
       color4: currentColors[3],
       color5: currentColors[4],
-      project_id: currentProject.project_id
+      project_id: currentProject.id
     }
-
+    console.log(palette)
     const response = await fetch('/api/v1/palettes', {
       method: 'POST',
       body: JSON.stringify(palette),
@@ -119,8 +132,19 @@ async function savePalette(event) {
 
     const paletteData = await response.json();
 
-    palettes.length = 0;
-    palettes = [...paletteData];
+    console.log(paletteData)
+    const newPalette = {
+      name: paletteData.name,
+      id: paletteData.id,
+      project_id: paletteData.project_id,
+      colors: [paletteData.color1, paletteData.color2, paletteData.color3, paletteData.color4, paletteData.color5]
+    }
+    console.log(newPalette)
+    // console.log(Object.values(paletteData))
+    // palettes.length = 0;
+
+
+    palettes = [...palettes, newPalette];
     $('.palette-name-input').val('');
     displayProjects();
   } else {
