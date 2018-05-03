@@ -28,12 +28,12 @@ h1 {
 }
 
 .colors div {
-  /*width: 100px;*/
-  /*height: 100px;*/
+  /*opacity: 0;*/
   margin: 10% auto;
 }
 
 .lock-btn {
+  opacity: 0;
   display: block;
   margin: auto;
   height: 30px;
@@ -46,22 +46,29 @@ h1 {
 
 .lock {
   background-image: url('/images/lock-icon.svg');
+  opacity: 1;
 }
 
 
 
-.lock-btn:hover {
+/*.lock-btn:hover {
   box-shadow: 0 0 4px 4px;
-}
+}*/
 
 .colors p {
   width: 100%;
   text-align: center;
+  margin-top: 5px;
+}
+
+.colors:hover .lock-btn {
+ opacity: 1;
 }
 
 .right-section {
   display: grid;
   grid-column: 2;
+  padding: 0 20px 20px 20px;
 }
 
 .new-palette-btn {
@@ -88,7 +95,7 @@ h1 {
 
 .project-colors {
   height: 200px;
-  width: 100px;
+  width: 125px;
   box-shadow: 0 0 5px 0;
   display: inline-block;
   margin: 15px;
