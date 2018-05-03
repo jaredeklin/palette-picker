@@ -91,9 +91,11 @@ async function saveProject(event) {
 async function getProjects() {
   const response = await fetch('/api/v1/projects');
   const projectData = await response.json();
-  projects.length = 0;
+  // projects.length = 0;
   projects = [...projectData];
+
   console.log(projects)
+
   await getPalettes();
   populateDropdown();
   displayProjects();
@@ -102,12 +104,18 @@ async function getProjects() {
 async function getPalettes() {
   const response = await fetch('/api/v1/palettes');
   const paletteData = await response.json();
-  palettes = [...paletteData];
-  console.log(palettes);
+  const palette = cleanPalette(paletteData);
+
+  palettes = [...palette];
 }
 
-function cleanPalette() {
-  
+function cleanPalette(paletteData) {
+  return paletteData.map(palette => ({
+    name: palette.name,
+    id: palette.id,
+    project_id: palette.project_id,
+    colors: [palette.color1, palette.color2, palette.color3, palette.color4, palette.color5]
+  }));
 }
 
 
@@ -123,7 +131,7 @@ async function savePalette(event) {
       color5: currentColors[4],
       project_id: currentProject.id
     }
-    console.log(palette)
+
     const response = await fetch('/api/v1/palettes', {
       method: 'POST',
       body: JSON.stringify(palette),
@@ -131,20 +139,10 @@ async function savePalette(event) {
     });
 
     const paletteData = await response.json();
+    const newPalette = cleanPalette([paletteData])
 
-    console.log(paletteData)
-    const newPalette = {
-      name: paletteData.name,
-      id: paletteData.id,
-      project_id: paletteData.project_id,
-      colors: [paletteData.color1, paletteData.color2, paletteData.color3, paletteData.color4, paletteData.color5]
-    }
-    console.log(newPalette)
-    // console.log(Object.values(paletteData))
-    // palettes.length = 0;
-
-
-    palettes = [...palettes, newPalette];
+    palettes = [...palettes, ...newPalette];
+    console.log(palettes)
     $('.palette-name-input').val('');
     displayProjects();
   } else {
@@ -174,13 +172,14 @@ function displayProjects() {
   projects.forEach(project => {
     $('.display-projects').append(`
       <article class="project-list">Project: ${ project.name }
-      ${ displayPalette(project.project_id) }
+      ${ displayPalette(project.id) }
       </article>
     `);
   });
 }
 
 function displayPalette(id) {
+  console.log(id)
   const match = palettes.filter(project => project.project_id === id);
   const projectPalettes = match.map(palette => `<div class="project-colors" data-id=${ palette.id }>${ palette.name } - ${ displayProjectColors(palette.colors) }<button></button></div>`);
   
