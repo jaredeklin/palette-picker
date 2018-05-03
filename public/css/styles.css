@@ -61,7 +61,7 @@ h1 {
   margin: auto;
 }
 
-.project-colors button {
+.project-colors .delete {
   background-image: url('/images/delete-button.svg');
   background-size: 20px;
   height: 20px;
@@ -70,7 +70,7 @@ h1 {
   border: none;
 }
 
-.project-colors button:hover {
+.project-colors .delete:hover {
   background-image: url('/images/delete-button-red.svg');
 }
 

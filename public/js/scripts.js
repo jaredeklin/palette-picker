@@ -9,7 +9,7 @@ $('.color-section').on('click', '.lock-btn', toggleLock);
 $('.save-project-btn').on('click', saveProject);
 $('.save-palette-btn').on('click', savePalette);
 $('#drop-down-menu').on('change', changeProject);
-$('.display-projects').on('click', 'button', deletePalette);
+$('.display-projects').on('click', '.delete', deletePalette);
 $('.display-projects').on('click', '.project-colors', displayColors);
   
 colorsArray();
@@ -91,10 +91,8 @@ async function saveProject(event) {
 async function getProjects() {
   const response = await fetch('/api/v1/projects');
   const projectData = await response.json();
-  // projects.length = 0;
-  projects = [...projectData];
 
-  console.log(projects)
+  projects = [...projectData];
 
   await getPalettes();
   populateDropdown();
@@ -179,9 +177,12 @@ function displayProjects() {
 }
 
 function displayPalette(id) {
-  console.log(id)
   const match = palettes.filter(project => project.project_id === id);
-  const projectPalettes = match.map(palette => `<div class="project-colors" data-id=${ palette.id }>${ palette.name } - ${ displayProjectColors(palette.colors) }<button></button></div>`);
+  const projectPalettes = match.map(palette => 
+    `<div class="project-colors" data-id=${ palette.id }>
+      ${ palette.name } - ${ displayProjectColors(palette.colors) }
+      <button class="delete"></button>
+    </div>`);
   
   return projectPalettes.join('');
 }
@@ -194,7 +195,6 @@ function displayProjectColors(colors) {
 
 async function deletePalette() {
   const id = { id: $(this).parent().data('id') };
-
   const response = await fetch('/api/v1/palettes', {
     method: 'DELETE',
     body: JSON.stringify(id),
@@ -203,9 +203,7 @@ async function deletePalette() {
 
   const deleteData = await response.json();
 
-  palettes.length = 0;
-  palettes = [...deleteData];
-
+  palettes = palettes.filter(palette => palette.id !== id.id)
   $(this).parent().remove();
 }
 

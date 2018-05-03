@@ -29,13 +29,11 @@ app.get('/api/v1/projects', (request, response) => {
 
 app.post('/api/v1/palettes', (request, response) => {
   const palette = request.body;
-  console.log(palette)
-  // const data = ['id', 'name', 'color1', 'color2', 'color3', 'color4', 'color5', 'project_id']
-  database('palettes').insert(palette, ['id', 'name', 'color1', 'color2', 'color3', 'color4', 'color5', 'project_id'])
+  const data = ['id', 'name', 'color1', 'color2', 'color3', 'color4', 'color5', 'project_id'];
+
+  database('palettes').insert(palette, data)
     .then(palette => response.status(201).json(palette[0]))
     .catch(error => response.status(500).json({error}))
-  // app.locals.palettes.push(request.body);,
-  // response.status(201).json(app.locals.palettes);
 });
 
 app.post('/api/v1/projects', (request, response) => {
@@ -46,14 +44,11 @@ app.post('/api/v1/projects', (request, response) => {
 });
 
 app.delete('/api/v1/palettes', (request, response) => {
-  // console.log(request.body)
   const id = request.body.id;
-  app.locals.palettes.forEach((palette, index) => {
-    if(palette.id === id) {
-      app.locals.palettes.splice(index, 1)
-    }
-  })
-  response.status(200).json(app.locals.palettes);
+
+  database('palettes').where('id', id).del()
+    .then(palette => response.status(204).json(palette))
+    .catch(error => response.status(500).json({error}))
 })
 
 app.listen(app.get('port'), () => {
