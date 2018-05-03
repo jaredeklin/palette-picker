@@ -1,24 +1,36 @@
 * {
   outline: none;
   box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 100px 30px 100px auto;
 }
 
 h1 {
+  grid-row: 1;
   text-align: center;
+  margin: 20px 0;
+  font-size: 36px;
+}
+
+.color-section {
+  display: grid;
+  grid-column: 1;
 }
 
 .colors {
   box-sizing: border-box;
-  display: inline-block;
-  width: 20%;
-  height: 500px;
-  margin: -2px;
+  height: 20vh;
 }
 
 .colors div {
-  width: 100px;
-  height: 100px;
-  margin: 240px auto 0 auto;
+  /*width: 100px;*/
+  /*height: 100px;*/
+  margin: 10% auto;
 }
 
 .lock-btn {
@@ -47,9 +59,18 @@ h1 {
   text-align: center;
 }
 
+.right-section {
+  display: grid;
+  grid-column: 2;
+}
+
 .new-palette-btn {
+  grid-row: 2;
   display: block;
-  margin: 20px auto;
+  height: 30px;
+  width: fit-content;
+  padding: 0 20px;
+  margin: 0 auto;
 }
 
 .palette-form {
@@ -59,6 +80,18 @@ h1 {
 
 .project-form {
   margin: auto;
+}
+
+.project-list {
+  width: fit-content;
+}
+
+.project-colors {
+  height: 200px;
+  width: 100px;
+  box-shadow: 0 0 5px 0;
+  display: inline-block;
+  margin: 15px;
 }
 
 .project-colors .delete {
@@ -75,7 +108,7 @@ h1 {
 }
 
 .palette-colors {
-  height: 20px;
-  width: 20px;
-  display: inline-block;
+  height: 30px;
+  /*width: 20px;
+  display: inline-block;*/
 }
