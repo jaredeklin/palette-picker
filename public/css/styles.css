@@ -18,13 +18,23 @@ h1 {
 }
 
 input {
+  height: 18px;
   border-radius: 3px;
   border: 1px solid lightgrey;
+  box-shadow: 1px 1px 1px 0;
+}
+
+.new-palette-btn,
+.save-palette-btn,
+.save-project-btn {
+  border-radius: 3px;
+  border: 1px solid lightgrey;
+  box-shadow: 1px 1px 1px 0;
 }
 
 .forms {
   border-bottom: 1px solid #FFF;
-  height: 230px;
+  height: 175px;
 }
 
 .color-section {
@@ -86,7 +96,7 @@ input {
   grid-row: 2;
   display: block;
   height: 30px;
-  width: 66%;
+  width: 345px;
   padding: 0 20px;
   margin: 0 auto;
   background: #FFF;
@@ -101,6 +111,7 @@ input {
 .project-form {
   margin: 20px;
   text-align: center;
+  font-weight: bold;
 }
 
 .project-list {
@@ -147,4 +158,12 @@ input {
 #drop-down-menu {
   -webkit-appearance: menulist-button;
   background: #FFF;
+  box-shadow: 1px 1px 1px 0;
+}
+
+#drop-down-menu:hover,
+.new-palette-btn:hover,
+.save-palette-btn:hover,
+.save-project-btn:hover {
+  box-shadow: 1px 1px 15px 0;
 }
