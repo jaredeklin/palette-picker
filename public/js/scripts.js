@@ -148,7 +148,6 @@ async function savePalette(event) {
     const newPalette = cleanPalette([paletteData])
 
     palettes = [...palettes, ...newPalette];
-    console.log(palettes)
     $('.palette-name-input').val('');
     displayProjects();
   } else {
@@ -159,7 +158,6 @@ async function savePalette(event) {
 
 function changeProject() {
   currentProject = projects.find(project => project.name === $(this).val())
-  console.log(currentProject)
 }
 
 function populateDropdown() {

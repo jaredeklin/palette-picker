@@ -23,25 +23,27 @@ input {
 }
 
 .forms {
-  /*background: rgba(0, 0, 0, .6);*/
-  /*width: 110%;*/
-  /*margin: 0 0 20px -20px;*/
-  /*color: #FFF;*/
   border-bottom: 1px solid #FFF;
+  height: 230px;
 }
 
 .color-section {
   display: grid;
   grid-column: 1;
+  max-height: 100vh;
 }
 
 .colors {
   box-sizing: border-box;
   height: 20vh;
+  position: relative;
 }
 
 .colors div {
-  margin: 20% auto;
+  margin: auto;
+  position: absolute;
+  left: 46%;
+  bottom: 5px;
 }
 
 .lock-btn {
@@ -78,10 +80,6 @@ input {
   height: 100vh;
   overflow-y: scroll;
   background-image: url('/images/Large_grey.jpg');
-}
-
-.left-section {
-  max-height: 100vh;
 }
 
 .new-palette-btn {
