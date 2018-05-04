@@ -8,8 +8,6 @@ const database = require('knex')(configuration);
 
 app.set('port', process.env.PORT || 3000);
 
-app.locals.projects = [];
-app.locals.palettes = [];
 app.locals.title = 'Palette Picker';
 
 app.use(bodyParser.json());
