@@ -33,14 +33,11 @@ describe('client routes', () => {
 describe('API routes', () => {
 
   beforeEach( () => {
-    database.migrate.rollback()
+    return database.migrate.rollback()
     .then( () => {
-      database.migrate.latest()
+      return database.migrate.latest()
       .then( () => {
         return database.seed.run()
-        .then( () => {
-          done();
-        });
       });
     });
   });
@@ -62,23 +59,35 @@ describe('API routes', () => {
       })
   });
 
-  // it('should POST a project', (done) => {
-  //   return chai.request(app)
-  //     .post('/api/v1/projects')
-  //     .send({ name: 'Wow' })
-  //     .then(response => {
-  //       response.should.have.status(201);
-  //       response.should.be.json;
-  //       response.body.should.be.an('object');
-  //       // response.body.length.should.equal(2);
-  //       // response.body[1].should.have.property('name');
-  //       // response.body[1].name.should.equal('Wow');
-  //       done()
-  //     })
-  //     .catch(error => {
-  //       throw error;
-  //     })
-  // })
+  it('should POST a project', () => {
+    return chai.request(app)
+      .post('/api/v1/projects')
+      .send({ name: 'Wow' })
+      .then(response => {
+        response.should.have.status(201);
+        response.should.be.json;
+        response.body.should.be.an('object');
+        response.body.should.have.property('id');
+        response.body.id.should.equal(2)
+        response.body.should.have.property('name');
+        response.body.name.should.equal('Wow');
+      })
+      .catch(error => {
+        throw error;
+      })
+  });
+
+  it('should not create a project with invalid input', () => {
+    return chai.request(app)
+      .post('/api/v1/projects')
+      .send({ nope: 'nope' })
+      .then(response => {
+        response.should.have.status(500);
+        response.should.be.json;
+        response.body.should.be.an('object');
+        response.body.should.have.property('error')
+      })
+  })
 
   it('should GET all palettes', () => {
     return chai.request(app)
@@ -102,31 +111,66 @@ describe('API routes', () => {
       })
   });
 
-  // it('should POST a new palette', () => {
-  //   return chai.request(app)
-  //     .post('/api/v1/palettes')
-  //     .send({
-  //       name: 'Yikes',
-  //       color1: '#A616E2',
-  //       color2: '#7FBF5E',
-  //       color3: '#11599C',
-  //       color4: '#441E7E',
-  //       color5: '#AA61AE',
-  //       project_id: project[0]
-  //     })
-  //     .then(response => {
-  //       response.should.have.status(201);
-  //       response.should.be.json;
-  //       response.body.should.be.an('object');
-  //       response.body.length.should.equal(4);
-  //       response.body[4].should.have.property('name');
-  //       response.body[4].name.should.equal('Yes');
-  //       response.body[4].should.have.property('color1');
-  //       response.body[4].color1.should.equal('#A616E2');        
-  //       response.body[4].should.have.property('color5');
-  //       response.body[4].color5.should.equal('#AA61AE');
-  //       response.body[4].should.have.property('project_id');
-  //       response.body[4].project_id.should.equal(1);
-  //     })
-  // })
+  it('should POST a new palette', () => {
+    return chai.request(app)
+      .post('/api/v1/palettes')
+      .send({
+        name: 'Yikes',
+        color1: '#A616E2',
+        color2: '#7FBF5E',
+        color3: '#11599C',
+        color4: '#441E7E',
+        color5: '#AA61AE',
+        project_id: 1
+      })
+      .then(response => {
+        response.should.have.status(201);
+        response.should.be.json;
+        response.body.should.be.an('object');
+        response.body.should.have.property('id');
+        response.body.id.should.equal(4);
+        response.body.should.have.property('name');
+        response.body.name.should.equal('Yikes');
+        response.body.should.have.property('color1');
+        response.body.color1.should.equal('#A616E2');        
+        response.body.should.have.property('color5');
+        response.body.color5.should.equal('#AA61AE');
+        response.body.should.have.property('project_id');
+        response.body.project_id.should.equal(1);
+      })
+  })
+
+  it('should not POST a palette if request is invalid', () => {
+    return chai.request(app)
+      .post('/api/v1/palettes')
+      .send({ names: 'nope'})
+      .then(response => {
+        response.should.have.status(500);
+        response.should.be.json;
+        response.body.should.be.an('object');
+        response.body.should.have.property('error');
+      })
+  })
+
+  it('should DELETE a palette', () => {
+    return chai.request(app)
+      .delete('/api/v1/palettes')
+      .send({ id: 3 })
+      .then(response => {
+        response.should.have.status(204);
+        response.should.be.an('object');
+      })
+  })
+
+  it('should return an error if invalid request', () => {
+    return chai.request(app)
+      .delete('/api/v1/palettes')
+      .send({ id: 'nope'})
+      .then(response => {
+        response.should.have.status(500);
+        response.should.be.json;
+        response.body.should.be.an('object');
+        response.body.should.have.property('error');
+      })
+  })
 });
