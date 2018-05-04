@@ -170,7 +170,7 @@ function displayProjects() {
   projects.forEach(project => {
     $('.display-projects').append(`
       <article class="project-list">
-        <h2>Project: ${ project.name }</h2>
+        <h2>Project Name: ${ project.name }</h2>
         ${ displayPalette(project.id) }
       </article>
     `);
@@ -182,7 +182,7 @@ function displayPalette(id) {
   const projectPalettes = match.map(palette => 
     `<div class="project-colors" data-id=${ palette.id }>
       ${ displayProjectColors(palette.colors) }
-      ${ palette.name }
+      <h5>${ palette.name }</h5>
       <button class="delete"></button>
     </div>`);
   
