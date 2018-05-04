@@ -209,8 +209,6 @@ async function deletePalette() {
     headers: { 'Content-Type': 'application/json' }
   });
 
-  const deleteData = await response.json();
-
   palettes = palettes.filter(palette => palette.id !== id.id)
   $(this).parent().remove();
 }
