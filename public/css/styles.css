@@ -19,6 +19,7 @@ h1 {
 
 input {
   border-radius: 3px;
+  border: 1px solid lightgrey;
 }
 
 .forms {
@@ -83,10 +84,11 @@ input {
   grid-row: 2;
   display: block;
   height: 30px;
-  width: fit-content;
+  width: 66%;
   padding: 0 20px;
   margin: 0 auto;
   background: #FFF;
+  border-radius: 5px;
 }
 
 .palette-form {
@@ -106,7 +108,7 @@ input {
 .project-colors {
   height: 200px;
   width: 140px;
-  box-shadow: 0 0 5px 0;
+  box-shadow: 1px 1px 5px 0;
   display: inline-block;
   margin: 15px 15px 15px 0;
   position: relative;

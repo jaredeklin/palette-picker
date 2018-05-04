@@ -70,22 +70,30 @@ function toggleLock() {
 
 async function saveProject(event) {
   event.preventDefault();
-  const newProject = {
-    name: $('.project-name-input').val()
+  const projectName = $('.project-name-input').val();
+
+  const duplicate = projects.find(project => project.name === projectName)
+
+  if(!duplicate){
+    const newProject = {
+      name: projectName
+    }
+
+    const response = await fetch('/api/v1/projects', {
+      method: 'POST',
+      body: JSON.stringify(newProject),
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    const projectData = await response.json();
+
+    projects = [...projects, projectData];
+    populateDropdown();
+    displayProjects();
+    $('.project-name-input').val('');
+  } else {
+    alert('That project name is currently being used. Please select another name.')
   }
-
-  const response = await fetch('/api/v1/projects', {
-    method: 'POST',
-    body: JSON.stringify(newProject),
-    headers: { 'Content-Type': 'application/json' }
-  });
-
-  const projectData = await response.json();
-
-  projects = [...projects, projectData];
-  populateDropdown();
-  displayProjects();
-  $('.project-name-input').val('');
 }
 
 async function getProjects() {
