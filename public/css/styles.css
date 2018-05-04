@@ -1,27 +1,51 @@
 * {
   outline: none;
   box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 100px 30px 100px auto;
 }
 
 h1 {
+  grid-row: 1;
   text-align: center;
+  margin: 20px 0;
+  font-size: 36px;
+}
+
+input {
+  border-radius: 3px;
+  border: 1px solid lightgrey;
+}
+
+.forms {
+  /*background: rgba(0, 0, 0, .6);*/
+  /*width: 110%;*/
+  /*margin: 0 0 20px -20px;*/
+  /*color: #FFF;*/
+  border-bottom: 1px solid #FFF;
+}
+
+.color-section {
+  display: grid;
+  grid-column: 1;
 }
 
 .colors {
   box-sizing: border-box;
-  display: inline-block;
-  width: 20%;
-  height: 500px;
-  margin: -2px;
+  height: 20vh;
 }
 
 .colors div {
-  width: 100px;
-  height: 100px;
-  margin: 240px auto 0 auto;
+  margin: 20% auto;
 }
 
 .lock-btn {
+  opacity: 0;
   display: block;
   margin: auto;
   height: 30px;
@@ -34,48 +58,95 @@ h1 {
 
 .lock {
   background-image: url('/images/lock-icon.svg');
-}
-
-
-
-.lock-btn:hover {
-  box-shadow: 0 0 4px 4px;
+  opacity: 1;
 }
 
 .colors p {
   width: 100%;
   text-align: center;
+  margin-top: 5px;
+}
+
+.colors:hover .lock-btn {
+  opacity: 1;
+}
+
+.right-section {
+  display: grid;
+  grid-column: 2;
+  padding: 0 20px 20px 20px;
+  height: 100vh;
+  overflow-y: scroll;
+  background-image: url('/images/Large_grey.jpg');
+}
+
+.left-section {
+  max-height: 100vh;
 }
 
 .new-palette-btn {
+  grid-row: 2;
   display: block;
-  margin: 20px auto;
+  height: 30px;
+  width: 66%;
+  padding: 0 20px;
+  margin: 0 auto;
+  background: #FFF;
+  border-radius: 5px;
 }
 
 .palette-form {
   width: fit-content;
-  margin: auto;
+  margin: 20px auto 0 auto;
 }
 
 .project-form {
-  margin: auto;
+  margin: 20px;
+  text-align: center;
 }
 
-.project-colors button {
-  background-image: url('/images/delete-button.svg');
+.project-list {
+  width: fit-content;
+  margin-top: 20px;
+}
+
+.project-colors {
+  height: 200px;
+  width: 140px;
+  box-shadow: 1px 1px 5px 0;
+  display: inline-block;
+  margin: 15px 15px 15px 0;
+  position: relative;
+  background: #FFF
+}
+
+.project-colors .delete {
+  background-image: url('/images/trash.svg');
   background-size: 20px;
   height: 20px;
   width: 20px;
   margin-left: 10px;
   border: none;
+  position: absolute;
+  bottom: 16px;
+  right: 5px;
 }
 
-.project-colors button:hover {
-  background-image: url('/images/delete-button-red.svg');
+.project-colors h5 {
+  margin-top: 18px;
+  padding-left: 5px;
+  display: inline-grid;
+}
+
+.project-colors .delete:hover {
+  background-image: url('/images/trash-red.svg');
 }
 
 .palette-colors {
-  height: 20px;
-  width: 20px;
-  display: inline-block;
+  height: 30px;
+}
+
+#drop-down-menu {
+  -webkit-appearance: menulist-button;
+  background: #FFF;
 }

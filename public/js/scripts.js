@@ -9,13 +9,15 @@ $('.color-section').on('click', '.lock-btn', toggleLock);
 $('.save-project-btn').on('click', saveProject);
 $('.save-palette-btn').on('click', savePalette);
 $('#drop-down-menu').on('change', changeProject);
-$('.display-projects').on('click', 'button', deletePalette);
+$('.display-projects').on('click', '.delete', deletePalette);
 $('.display-projects').on('click', '.project-colors', displayColors);
   
 colorsArray();
+getProjects();
 
 function randomColor() {
   let hexColor = '';
+  
   while(hexColor.length < 6) {
     hexColor += (Math.random()).toString(16).substr(-6).substr(-1).toUpperCase()
   }
@@ -68,34 +70,59 @@ function toggleLock() {
 
 async function saveProject(event) {
   event.preventDefault();
-  const newProject = {
-    projectName: $('.project-name-input').val(),
-    projectId: Date.now()
+  const projectName = $('.project-name-input').val();
+
+  const duplicate = projects.find(project => project.name === projectName)
+
+  if(!duplicate){
+    const newProject = {
+      name: projectName
+    }
+
+    const response = await fetch('/api/v1/projects', {
+      method: 'POST',
+      body: JSON.stringify(newProject),
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    const projectData = await response.json();
+
+    projects = [...projects, projectData];
+    populateDropdown();
+    displayProjects();
+    $('.project-name-input').val('');
+  } else {
+    alert('That project name is currently being used. Please select another name.')
   }
-
-  const response = await fetch('/api/v1/projects', {
-    method: 'POST',
-    body: JSON.stringify(newProject),
-    headers: { 'Content-Type': 'application/json' }
-  });
-
-  const projectData = await response.json();
-
-  projects.length = 0;
-  projects = [...projectData];
-  populateDropdown();
-  displayProjects();
-  $('.project-name-input').val('');
 }
 
-// async function getProjects(event) {
-//   event.preventDefault()
-//   const response = await fetch('/api/v1/projects');
-//   const projectData = await response.json();
-  
-//   projects.push(projectData);
-//   populateDropdown();
-// }
+async function getProjects() {
+  const response = await fetch('/api/v1/projects');
+  const projectData = await response.json();
+
+  projects = [...projectData];
+
+  await getPalettes();
+  populateDropdown();
+  displayProjects();
+}
+
+async function getPalettes() {
+  const response = await fetch('/api/v1/palettes');
+  const paletteData = await response.json();
+  const palette = cleanPalette(paletteData);
+
+  palettes = [...palette];
+}
+
+function cleanPalette(paletteData) {
+  return paletteData.map(palette => ({
+    name: palette.name,
+    id: palette.id,
+    project_id: palette.project_id,
+    colors: [palette.color1, palette.color2, palette.color3, palette.color4, palette.color5]
+  }));
+}
 
 
 async function savePalette(event) {
@@ -103,9 +130,12 @@ async function savePalette(event) {
   if(currentProject) {
     const palette = {
       name: $('.palette-name-input').val(),
-      colors: currentColors,
-      projectId: currentProject.projectId,
-      id: Date.now()
+      color1: currentColors[0],
+      color2: currentColors[1],
+      color3: currentColors[2],
+      color4: currentColors[3],
+      color5: currentColors[4],
+      project_id: currentProject.id
     }
 
     const response = await fetch('/api/v1/palettes', {
@@ -115,19 +145,20 @@ async function savePalette(event) {
     });
 
     const paletteData = await response.json();
+    const newPalette = cleanPalette([paletteData])
 
-    palettes.length = 0;
-    palettes = [...paletteData];
+    palettes = [...palettes, ...newPalette];
+    console.log(palettes)
     $('.palette-name-input').val('');
     displayProjects();
   } else {
-    alert('Please select a project')
+    alert('Please select a project');
   }
 }
 
 
 function changeProject() {
-  currentProject = projects.find(project => project.projectName === $(this).val())
+  currentProject = projects.find(project => project.name === $(this).val())
   console.log(currentProject)
 }
 
@@ -136,7 +167,7 @@ function populateDropdown() {
 
   projects.forEach(project => {
     $('#drop-down-menu').append(`
-      <option>${ project.projectName }</option>
+      <option>${ project.name }</option>
     `);
   });
 }
@@ -146,16 +177,22 @@ function displayProjects() {
 
   projects.forEach(project => {
     $('.display-projects').append(`
-      <article class="project-list">Project: ${ project.projectName }
-      ${ displayPalette(project.projectId) }
+      <article class="project-list">
+        <h2>Project Name: ${ project.name }</h2>
+        ${ displayPalette(project.id) }
       </article>
     `);
   });
 }
 
 function displayPalette(id) {
-  const match = palettes.filter(project => project.projectId === id);
-  const projectPalettes = match.map(palette => `<div class="project-colors" data-id=${palette.id}>${ palette.name } - ${ displayProjectColors(palette.colors) }<button></button></div>`);
+  const match = palettes.filter(project => project.project_id === id);
+  const projectPalettes = match.map(palette => 
+    `<div class="project-colors" data-id=${ palette.id }>
+      ${ displayProjectColors(palette.colors) }
+      <h5>${ palette.name }</h5>
+      <button class="delete"></button>
+    </div>`);
   
   return projectPalettes.join('');
 }
@@ -168,7 +205,6 @@ function displayProjectColors(colors) {
 
 async function deletePalette() {
   const id = { id: $(this).parent().data('id') };
-
   const response = await fetch('/api/v1/palettes', {
     method: 'DELETE',
     body: JSON.stringify(id),
@@ -177,34 +213,16 @@ async function deletePalette() {
 
   const deleteData = await response.json();
 
-  palettes.length = 0;
-  palettes = [...deleteData];
-
+  palettes = palettes.filter(palette => palette.id !== id.id)
   $(this).parent().remove();
-
-  console.log(palettes)
 }
 
 function displayColors(event) {
-  // console.log(palettes)
-  // console.log(event.currentTarget.dataset.id)
   const id = parseInt(event.currentTarget.dataset.id);
-  const match = palettes.find(palette => {
-    console.log(palette.id, id)
-    return palette.id === id
-  });
-  console.log(match)
+  const match = palettes.find(palette => palette.id === id);
+  
   currentColors.length = 0;
-  currentColors = [...match.colors]
-  //currentColors array
+  currentColors = [...match.colors];
   appendColors()
 }
-
-
-
-
-
-
-
-
 
