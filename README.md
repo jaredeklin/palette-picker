@@ -1,0 +1,1 @@
+[![Build Status](https://travis-ci.org/jaredeklin/palette-picker.svg?branch=master)](https://travis-ci.org/jaredeklin/palette-picker)
